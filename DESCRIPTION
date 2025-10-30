@@ -1,0 +1,31 @@
+Package: wdCurationR
+Title: wdCurationR
+Version: 0.0.1
+Authors@R: c(
+    person("Adriano", "Rutz", , "rutz@imsb.biol.ethz.ch", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-0443-9902"))
+  )
+Maintainer: Adriano Rutz <rutz@imsb.biol.ethz.ch>
+Description: Series of programs to curate Wikidata.
+License: GPL (>= 3)
+URL: https://github.com/Adafede/wd-curation-r,
+    https://github.com/Adafede/wd-curation-r/
+BugReports: 
+    https://github.com/Adafede/wd-curation-r/issues
+Depends:
+    R (>= 4.1.0)
+Imports:
+    devtools (>= 2.4.5),
+    readxl (>= 1.4.5),
+    rlang (>= 1.1.4),
+    stringi (>= 1.8.7),
+    tidytable (>= 0.11.1),
+    WikidataQueryServiceR (>= 1.0.0)
+Suggests: 
+    roxygen2 (>= 7.2.3),
+    utils
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3

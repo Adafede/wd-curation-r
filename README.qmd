@@ -1,0 +1,32 @@
+---
+format: 
+  gfm: default
+  html: default
+bibliography: grateful-refs.bib
+---
+
+<!-- README.md is generated from README.qmd. Please edit that file -->
+
+# wd-curation-r
+
+Series of programs to curate Wikidata.
+
+Files generated in `data` can be used to update Wikidata using [QuickStatements 3.0](https://qs-dev.toolforge.org/).
+
+## Additional software credits
+
+```{r, echo = FALSE, message = FALSE}
+# Check if DESCRIPTION is in current dir
+# Else `altdoc` will not find the dependencies
+desc_path <- if (file.exists("DESCRIPTION")) {
+  "."
+} else {
+  ".."
+}
+grateful::cite_packages(
+  output = "table",
+  out.dir = getwd(),
+  path = desc_path
+) |> 
+  knitr::kable()
+```
