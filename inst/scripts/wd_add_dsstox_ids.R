@@ -33,6 +33,7 @@ SELECT ?structure ?structure_id_dsstox ?inchikey ?statement ?statement_inchikey 
 sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
 
 temp_zip <- tempfile(fileext = ".zip")
+options(timeout = max(300, getOption("timeout")))
 download.file(url = path_dsstox, destfile = temp_zip, mode = "wb")
 temp_dir <- tempdir()
 dsstox <- lapply(
