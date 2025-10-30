@@ -15,7 +15,10 @@ BugReports:
 Depends:
     R (>= 4.1.0)
 Imports:
+    curl (>= 5.2.1),
+    DBI (>= 1.2.3),
     devtools (>= 2.4.5),
+    duckdb (>= 1.4.1),
     readxl (>= 1.4.5),
     rlang (>= 1.1.4),
     stringi (>= 1.8.7),

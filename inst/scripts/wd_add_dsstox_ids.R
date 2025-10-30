@@ -1,3 +1,6 @@
+if (!requireNamespace("curl", quietly = TRUE)) {
+  install.packages("curl")
+}
 if (!requireNamespace("readxl", quietly = TRUE)) {
   install.packages("readxl")
 }
@@ -33,8 +36,11 @@ SELECT ?structure ?structure_id_dsstox ?inchikey ?statement ?statement_inchikey 
 sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
 
 temp_zip <- tempfile(fileext = ".zip")
-options(timeout = max(300, getOption("timeout")))
-download.file(url = path_dsstox, destfile = temp_zip, mode = "wb")
+curl::curl_download(
+  url = path_dsstox,
+  destfile = temp_zip,
+  quiet = FALSE
+)
 temp_dir <- tempdir()
 dsstox <- lapply(
   X = utils::unzip(zipfile = temp_zip, list = TRUE)$Name,

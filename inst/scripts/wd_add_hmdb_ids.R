@@ -1,3 +1,6 @@
+if (!requireNamespace("curl", quietly = TRUE)) {
+  install.packages("curl")
+}
 if (!requireNamespace("stringi", quietly = TRUE)) {
   install.packages("stringi")
 }
@@ -33,8 +36,11 @@ SELECT ?structure ?structure_id_hmdb ?inchikey ?statement ?statement_inchikey WH
 sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
 
 temp_zip <- tempfile(fileext = ".zip")
-options(timeout = max(300, getOption("timeout")))
-utils::download.file(url = path_hmdb, destfile = temp_zip, mode = "wb")
+curl::curl_download(
+  url = path_hmdb,
+  destfile = temp_zip,
+  quiet = FALSE
+)
 temp_dir <- tempdir()
 utils::unzip(
   zipfile = temp_zip,

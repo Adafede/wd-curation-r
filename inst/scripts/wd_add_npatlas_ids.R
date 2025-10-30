@@ -26,11 +26,7 @@ SELECT ?structure ?structure_id_npatlas ?inchikey ?statement ?statement_inchikey
     }
 }
 "
-sparql_inchikeys <- "
-SELECT * WHERE {
-    ?structure wdt:P235 ?inchikey. hint:Prior hint:rangeSafe TRUE.
-}
-"
+sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
 
 npatlas <- path_npatlas |>
   tidytable::fread(select = c("npaid", "compound_inchikey")) |>
@@ -41,7 +37,7 @@ npatlas_ids <- sparql_npatlas |>
 inchikeys <- sparql_inchikeys |>
   WikidataQueryServiceR::query_wikidata()
 
-# Filter valid and invalid Drugbank IDs
+# Filter valid and invalid NP Atlas IDs
 ## COMMENT: Done this way in case the item has 2 InChIKeys
 npatlas_ids_ok <- npatlas_ids |>
   tidytable::group_by(structure) |>
