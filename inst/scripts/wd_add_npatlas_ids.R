@@ -41,30 +41,32 @@ npatlas_ids <- sparql_npatlas |>
 inchikeys <- sparql_inchikeys |>
   WikidataQueryServiceR::query_wikidata()
 
+# Filter valid and invalid Drugbank IDs
+## COMMENT: Done this way in case the item has 2 InChIKeys
 npatlas_ids_ok <- npatlas_ids |>
-  # Done this way in case the item has 2 InChIKeys
   tidytable::group_by(structure) |>
-  tidytable::filter(statement_inchikey %in% inchikey)
+  tidytable::filter(is.element(el = statement_inchikey, set = inchikey))
 
 npatlas_ids_not_ok <- npatlas_ids |>
   tidytable::anti_join(npatlas_ids_ok)
 
+# Prepare additions
+## COMMENT: Accept when one out of many IDs is mapped for the same InChIKey
 add_final <- npatlas |>
   tidytable::anti_join(
     npatlas_ids_ok,
-    by = c("id" = "structure_id_npatlas", "inchikey" = "inchikey")
+    # by = c("id" = "structure_id_npatlas", "inchikey" = "inchikey")
+    by = c("inchikey" = "inchikey")
   ) |>
   tidytable::inner_join(inchikeys, by = c("inchikey" = "inchikey")) |>
   tidytable::distinct() |>
-  dplyr::mutate_all(
-    ~ gsub(
+  tidytable::mutate(
+    structure = gsub(
       pattern = "http://www.wikidata.org/entity/",
       replacement = "",
-      x = .,
+      x = structure,
       fixed = TRUE
-    )
-  ) |>
-  tidytable::mutate(
+    ),
     qid = structure,
     P7746 = paste0("\"\"\"", id, "\"\"\""),
     S11797 = "Q21445422",
@@ -74,70 +76,46 @@ add_final <- npatlas |>
 
 deprecate_final <- npatlas_ids |>
   tidytable::inner_join(npatlas_ids_not_ok) |>
-  dplyr::mutate_all(
-    ~ gsub(
+  tidytable::mutate(
+    structure = gsub(
       pattern = "http://www.wikidata.org/entity/",
       replacement = "",
-      x = .,
+      x = structure,
+      fixed = TRUE
+    ),
+    structure_id_npatlas = gsub(
+      pattern = "http://www.wikidata.org/entity/",
+      replacement = "",
+      x = structure_id_npatlas,
       fixed = TRUE
     )
   ) |>
-  tidytable::rowwise() |>
+  tidytable::distinct(qid = structure, structure_id_npatlas) |>
   tidytable::mutate(
-    qid = structure,
-    statement = gsub(
-      pattern = paste0("statement/", toupper(structure), "-"),
-      replacement = "$",
-      x = statement
-    ),
-    rank = "deprecated",
-    reason = "Q25895909"
+    ranker = paste0(
+      qid,
+      '|P7746|"',
+      structure_id_npatlas,
+      '"|R-|P2241|Q25895909'
+    )
   ) |>
-  tidytable::select(qid, statement, rank, reason) |>
-  tidytable::distinct() |>
-  tidytable::mutate(ranker = paste0(qid, statement, "|", rank, "|", reason)) |>
   tidytable::distinct(ranker)
 
-# delete_final <- npatlas_ids |>
-#   tidytable::inner_join(npatlas_ids_not_ok) |>
-#   dplyr::mutate_all(~ gsub(
-#     pattern = "http://www.wikidata.org/entity/",
-#     replacement = "",
-#     x = .,
-#     fixed = TRUE
-#   )) |>
-#   tidytable::mutate(
-#     qid = structure,
-#     P7746 = paste0("\"\"\"", structure_id_npatlas, "\"\"\"")
-#   ) |>
-#   tidytable::distinct(qid, P7746)
-
-source(file = "~/Git/hieroglyph/r/split_data_table.R")
-
-if (nrow(add_final) != 0) {
-  split_data_table(
-    x = add_final,
-    no_rows_per_frame = 5000,
-    text = "npaids",
-    path_to_store = "~/Documents/tmp/lotus/qs_addition/npatlas"
-  )
+# Write outputs
+write_output <- function(data, path) {
+  if (nrow(data) > 0) {
+    dir <- dirname(path)
+    if (!dir.exists(dir)) {
+      dir.create(dir, recursive = TRUE)
+    }
+    tidytable::fwrite(
+      data,
+      path,
+      quote = FALSE,
+      col.names = path == path_output_qs
+    )
+  }
 }
 
-if (nrow(deprecate_final) != 0) {
-  split_data_table(
-    x = deprecate_final,
-    header = FALSE,
-    no_rows_per_frame = 500,
-    text = "npatlas",
-    path_to_store = "~/Documents/tmp/lotus/ranker/npatlas"
-  )
-}
-
-# if (nrow(delete_final) != 0) {
-#   split_data_table(
-#     x = delete_final,
-#     no_rows_per_frame = 5000,
-#     text = "npatlas",
-#     path_to_store = "~/Documents/tmp/lotus/ranker/npatlas"
-#   )
-# }
+write_output(add_final, path_output_qs)
+write_output(deprecate_final, path_output_ranks)
