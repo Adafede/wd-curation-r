@@ -1,9 +1,3 @@
-if (!requireNamespace("curl", quietly = TRUE)) {
-  install.packages("curl")
-}
-if (!requireNamespace("duckplyr", quietly = TRUE)) {
-  install.packages("duckplyr")
-}
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
@@ -11,14 +5,14 @@ if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
   install.packages("WikidataQueryServiceR")
 }
 
-path_surechembl <- "https://ftp.ebi.ac.uk/pub/databases/chembl/SureChEMBL/bulk_data/latest/compounds.parquet"
-path_output_qs <- "data/surechembl/surechembl_ids.csv"
-path_output_ranks <- "data/surechembl/surechembl_ranks.csv"
+path_swisslipids <- "https://www.swisslipids.org/api/file.php?cas=download_files&file=lipids.tsv"
+path_output_qs <- "data/swisslipids/swisslipids_ids.csv"
+path_output_ranks <- "data/swisslipids/swisslipids_ranks.csv"
 
-sparql_surechembl <- "
-SELECT ?structure ?structure_id_surechembl ?inchikey ?statement ?statement_inchikey WHERE {
-    ?structure p:P2877 ?statement.
-    ?statement ps:P2877 ?structure_id_surechembl.
+sparql_swisslipids <- "
+SELECT ?structure ?structure_id_swisslipids ?inchikey ?statement ?statement_inchikey WHERE {
+    ?structure p:P8691 ?statement.
+    ?statement ps:P8691 ?structure_id_swisslipids.
     ?structure wdt:P235 ?inchikey.
     OPTIONAL {
       ?statement prov:wasDerivedFrom [
@@ -29,56 +23,45 @@ SELECT ?structure ?structure_id_surechembl ?inchikey ?statement ?statement_inchi
 "
 sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
 
-surechembl_ids <- sparql_surechembl |>
+swisslipids <- path_swisslipids |>
+  tidytable::fread() |>
+  tidytable::distinct(id = "Lipid ID", inchikey = "InChI key (pH7.3)") |>
+  dplyr::mutate_all(
+    ~ gsub(
+      pattern = "InChIKey=",
+      replacement = "",
+      x = .,
+      fixed = TRUE
+    )
+  ) |>
+  tidytable::filter(inchikey != "") |>
+  tidytable::filter(inchikey != "-")
+
+swisslipids_ids <- sparql_swisslipids |>
   WikidataQueryServiceR::query_wikidata()
 inchikeys <- sparql_inchikeys |>
-  WikidataQueryServiceR::query_wikidata() |>
-  as.data.frame()
+  WikidataQueryServiceR::query_wikidata()
 
-local_file <- "compounds.parquet"
-if (!file.exists(local_file)) {
-  curl::curl_download(
-    url = path_surechembl,
-    destfile = local_file,
-    quiet = FALSE
-  )
-}
-
-library(duckplyr)
-surechembl_df <- local_file |>
-  duckplyr::read_parquet_duckdb() |>
-  select(id, inchikey = inchi_key) |>
-  inner_join(inchikeys, by = c("inchikey" = "inchikey")) |>
-  select(-structure) |>
-  collect() |>
-  tidytable::tidytable()
-
-# Clean up
-# file.remove(local_file)
-
-# Filter valid and invalid SureChEMBL IDs
+# Filter valid and invalid SwissLipids IDs
 ## COMMENT: Done this way in case the item has 2 InChIKeys
-surechembl_ids_ok <- surechembl_ids |>
+swisslipids_ids_ok <- swisslipids_ids |>
   tidytable::group_by(structure) |>
-  tidytable::filter(
-    is.element(el = statement_inchikey, set = inchikey)
-  )
+  tidytable::filter(is.element(el = statement_inchikey, set = inchikey))
 
-surechembl_ids_not_ok <- surechembl_ids_ok |>
-  tidytable::anti_join(surechembl_ids) |>
+swisslipids_ids_not_ok <- swisslipids_ids |>
+  tidytable::anti_join(swisslipids_ids_ok) |>
   tidytable::filter(!is.na(statement_inchikey)) |>
   tidytable::filter(statement_inchikey != "")
 
 # Prepare additions
 ## COMMENT: Accept when one out of many IDs is mapped for the same InChIKey
-add_final <- surechembl_df |>
+add_final <- swisslipids |>
   tidytable::anti_join(
-    surechembl_ids_ok,
-    # by = c("id" = "structure_id_surechembl", "inchikey" = "inchikey")
+    swisslipids_ids_ok,
+    # by = c("id" = "structure_id_swisslipids", "inchikey" = "inchikey")
     by = c("inchikey" = "inchikey")
   ) |>
   tidytable::inner_join(inchikeys, by = c("inchikey" = "inchikey")) |>
-  tidytable::tidytable() |>
   tidytable::distinct() |>
   tidytable::mutate(
     structure = gsub(
@@ -88,15 +71,14 @@ add_final <- surechembl_df |>
       fixed = TRUE
     ),
     qid = structure,
-    P2877 = paste0("\"\"\"", id, "\"\"\""),
+    P8691 = paste0("\"\"\"", id, "\"\"\""),
     S11797 = "Q21445422",
     s235 = paste0("\"\"\"", inchikey, "\"\"\"")
   ) |>
-  tidytable::select(qid, P2877, S11797, s235)
+  tidytable::select(qid, P8691, S11797, s235)
 
-deprecate_final <- surechembl_ids |>
-  tidytable::inner_join(surechembl_ids_not_ok) |>
-  tidytable::tidytable() |>
+deprecate_final <- swisslipids_ids |>
+  tidytable::inner_join(swisslipids_ids_not_ok) |>
   tidytable::mutate(
     structure = gsub(
       pattern = "http://www.wikidata.org/entity/",
@@ -104,19 +86,19 @@ deprecate_final <- surechembl_ids |>
       x = structure,
       fixed = TRUE
     ),
-    structure_id_surechembl = gsub(
+    structure_id_swisslipids = gsub(
       pattern = "http://www.wikidata.org/entity/",
       replacement = "",
-      x = structure_id_surechembl,
+      x = structure_id_swisslipids,
       fixed = TRUE
     )
   ) |>
-  tidytable::distinct(qid = structure, structure_id_surechembl) |>
+  tidytable::distinct(qid = structure, structure_id_swisslipids) |>
   tidytable::mutate(
     ranker = paste0(
       qid,
-      '|P2877|"',
-      structure_id_surechembl,
+      '|P8691|"',
+      structure_id_swisslipids,
       '"|R-|P2241|Q25895909'
     )
   ) |>
