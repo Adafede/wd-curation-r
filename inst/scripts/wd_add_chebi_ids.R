@@ -71,7 +71,9 @@ chebi_ids_not_ok <- chebi_ids |>
   tidytable::filter(
     mapping_type == "Q39893449" |
       is.na(mapping_type)
-  )
+  ) |>
+  tidytable::filter(!is.na(statement_inchi)) |>
+  tidytable::filter(statement_inchi != "")
 
 # Prepare additions
 ## COMMENT: Accept when one out of many IDs is mapped for the same InChI
