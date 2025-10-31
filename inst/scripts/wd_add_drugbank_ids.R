@@ -45,7 +45,9 @@ drugbank_ids_ok <- drugbank_ids |>
   tidytable::filter(is.element(el = statement_inchikey, set = inchikey))
 
 drugbank_ids_not_ok <- drugbank_ids |>
-  tidytable::anti_join(drugbank_ids_ok)
+  tidytable::anti_join(drugbank_ids_ok) |>
+  tidytable::filter(!is.na(statement_inchikey)) |>
+  tidytable::filter(statement_inchikey != "")
 
 # Prepare additions
 ## COMMENT: Accept when one out of many IDs is mapped for the same InChIKey
