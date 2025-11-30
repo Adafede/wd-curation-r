@@ -13,6 +13,11 @@ path_output_qs <- "data/unii/unii_ids.csv"
 path_output_ranks <- "data/unii/unii_ranks.csv"
 
 sparql_unii <- "
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pr: <http://www.wikidata.org/prop/reference/>
 SELECT ?structure ?structure_id_unii ?inchikey ?statement ?statement_inchikey WHERE {
     ?structure p:P652 ?statement.
     ?statement ps:P652 ?structure_id_unii.
@@ -24,7 +29,11 @@ SELECT ?structure ?structure_id_unii ?inchikey ?statement ?statement_inchikey WH
     }
 }
 "
-sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
+
+sparql_inchikeys <- "
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT * WHERE { ?structure wdt:P235 ?inchikey. }
+"
 
 # Download the ZIP to a temp file
 temp_zip <- tempfile(fileext = ".zip")

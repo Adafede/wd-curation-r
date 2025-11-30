@@ -16,6 +16,11 @@ path_output_qs <- "data/surechembl/surechembl_ids.csv"
 path_output_ranks <- "data/surechembl/surechembl_ranks.csv"
 
 sparql_surechembl <- "
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pr: <http://www.wikidata.org/prop/reference/>
 SELECT ?structure ?structure_id_surechembl ?inchikey ?statement ?statement_inchikey WHERE {
     ?structure p:P2877 ?statement.
     ?statement ps:P2877 ?structure_id_surechembl.
@@ -27,7 +32,11 @@ SELECT ?structure ?structure_id_surechembl ?inchikey ?statement ?statement_inchi
     }
 }
 "
-sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
+
+sparql_inchikeys <- "
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT * WHERE { ?structure wdt:P235 ?inchikey. }
+"
 
 surechembl_ids <- sparql_surechembl |>
   WikidataQueryServiceR::query_wikidata()

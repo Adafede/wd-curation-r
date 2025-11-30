@@ -38,7 +38,12 @@ SELECT ?structure ?structure_id_pubchem ?inchikey ?statement ?statement_inchikey
     }
 }
 "
-sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
+
+sparql_inchikeys <- "
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT * WHERE { ?structure wdt:P235 ?inchikey. }
+"
+
 pubchem_ids <- sparql_pubchem |>
   WikidataQueryServiceR::query_wikidata()
 inchikeys <- sparql_inchikeys |>
@@ -67,9 +72,9 @@ library(duckplyr)
 pubchem <- local_file |>
   duckplyr::read_csv_duckdb() |>
   select(-column1) |>
-  mutate(
-    column2 = gsub(pattern = "^\\s+|\\s+$", replacement = "", x = column2)
-  ) |>
+  # mutate(
+  #   column2 = gsub(pattern = "^\\s+|\\s+$", replacement = "", x = column2)
+  # ) |>
   inner_join(inchikeys, by = c("column2" = "inchikey")) |>
   select(-structure) |>
   collect()

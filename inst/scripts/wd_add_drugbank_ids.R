@@ -26,7 +26,11 @@ SELECT ?structure ?structure_id_drugbank ?inchikey ?statement ?statement_inchike
     }
 }
 "
-sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
+
+sparql_inchikeys <- "
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT * WHERE { ?structure wdt:P235 ?inchikey. }
+"
 
 drugbank <- path_drugbank |>
   tidytable::fread(select = c("DrugBank ID", "Standard InChI Key")) |>
