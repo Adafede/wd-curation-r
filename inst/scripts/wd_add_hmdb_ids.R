@@ -33,7 +33,10 @@ SELECT ?structure ?structure_id_hmdb ?inchikey ?statement ?statement_inchikey WH
 }
 "
 
-sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
+sparql_inchikeys <- "
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT * WHERE { ?structure wdt:P235 ?inchikey. }
+"
 
 temp_zip <- tempfile(fileext = ".zip")
 curl::curl_download(

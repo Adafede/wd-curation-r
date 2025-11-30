@@ -10,6 +10,11 @@ path_output_qs <- "data/swisslipids/swisslipids_ids.csv"
 path_output_ranks <- "data/swisslipids/swisslipids_ranks.csv"
 
 sparql_swisslipids <- "
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pr: <http://www.wikidata.org/prop/reference/>
 SELECT ?structure ?structure_id_swisslipids ?inchikey ?statement ?statement_inchikey WHERE {
     ?structure p:P8691 ?statement.
     ?statement ps:P8691 ?structure_id_swisslipids.
@@ -21,7 +26,11 @@ SELECT ?structure ?structure_id_swisslipids ?inchikey ?statement ?statement_inch
     }
 }
 "
-sparql_inchikeys <- "SELECT * WHERE { ?structure wdt:P235 ?inchikey. }"
+
+sparql_inchikeys <- "
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT * WHERE { ?structure wdt:P235 ?inchikey. }
+"
 
 swisslipids <- path_swisslipids |>
   tidytable::fread() |>

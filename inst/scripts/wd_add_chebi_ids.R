@@ -34,7 +34,10 @@ SELECT ?structure ?structure_id_chebi ?inchi ?mapping_type ?statement ?statement
 }
 "
 
-sparql_inchis <- "SELECT * WHERE { ?structure wdt:P234 ?inchi. }"
+sparql_inchis <- "
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT * WHERE { ?structure wdt:P234 ?inchi. }
+"
 
 # Load and filter ChEBI data
 chebi <- path_chebi |>
