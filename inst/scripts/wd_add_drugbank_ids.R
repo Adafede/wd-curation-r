@@ -1,9 +1,9 @@
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
-if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
-  install.packages("WikidataQueryServiceR")
-}
+source(
+  file = "https://raw.githubusercontent.com/adafede/cascade/main/R/query_wikidata.R"
+)
 
 path_drugbank <- "https://go.drugbank.com/releases/latest/downloads/all-drugbank-vocabulary"
 path_output_qs <- "data/drugbank/drugbank_ids.csv"
@@ -38,9 +38,9 @@ drugbank <- path_drugbank |>
   tidytable::filter(inchikey != "")
 
 drugbank_ids <- sparql_drugbank |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 inchikeys <- sparql_inchikeys |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 
 # Filter valid and invalid Drugbank IDs
 ## COMMENT: Done this way in case the item has 2 InChIKeys

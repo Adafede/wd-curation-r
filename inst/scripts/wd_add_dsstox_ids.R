@@ -7,9 +7,9 @@ if (!requireNamespace("readxl", quietly = TRUE)) {
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
-if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
-  install.packages("WikidataQueryServiceR")
-}
+source(
+  file = "https://raw.githubusercontent.com/adafede/cascade/main/R/query_wikidata.R"
+)
 
 path_dsstox <- "https://clowder.edap-cluster.com/files/6616d8d7e4b063812d70fc95/blob"
 path_output_qs <- "data/dsstox/dsstox_ids.csv"
@@ -63,9 +63,9 @@ dsstox <- lapply(
 unlink(temp_zip)
 
 dsstox_ids <- sparql_dsstox |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 inchikeys <- sparql_inchikeys |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 
 # Filter valid and invalid DSSTOX IDs
 ## COMMENT: Done this way in case the item has 2 InChIKeys

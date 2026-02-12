@@ -7,9 +7,9 @@ if (!requireNamespace("stringi", quietly = TRUE)) {
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
-if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
-  install.packages("WikidataQueryServiceR")
-}
+source(
+  file = "https://raw.githubusercontent.com/adafede/cascade/main/R/query_wikidata.R"
+)
 
 path_hmdb <- "https://hmdb.ca/system/downloads/current/structures.zip"
 path_output_qs <- "data/hmdb/hmdb_ids.csv"
@@ -116,9 +116,9 @@ hmdb_prepared <- hmdb_df |>
 file.remove(hmdb_structures)
 
 hmdb_ids <- sparql_hmdb |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 inchikeys <- sparql_inchikeys |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 
 # Filter valid and invalid HMDB IDs
 ## COMMENT: Done this way in case the item has 2 InChIKeys

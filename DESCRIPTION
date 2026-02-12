@@ -20,12 +20,12 @@ Imports:
     devtools (>= 2.4.5),
     duckdb (>= 1.4.1),
     duckplyr (>= 1.1.2),
+    httr2 (>= 1.2.1),
     readxl (>= 1.4.5),
     rlang (>= 1.1.4),
     stringi (>= 1.8.7),
-    tidytable (>= 0.11.1),
-    WikidataQueryServiceR (>= 1.0.0)
-Suggests: 
+    tidytable (>= 0.11.1)
+Suggests:
     roxygen2 (>= 7.2.3),
     utils
 Encoding: UTF-8

@@ -7,9 +7,9 @@ if (!requireNamespace("duckplyr", quietly = TRUE)) {
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
-if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
-  install.packages("WikidataQueryServiceR")
-}
+source(
+  file = "https://raw.githubusercontent.com/adafede/cascade/main/R/query_wikidata.R"
+)
 
 path_surechembl <- "https://ftp.ebi.ac.uk/pub/databases/chembl/SureChEMBL/bulk_data/latest/compounds.parquet"
 path_output_qs <- "data/surechembl/surechembl_ids.csv"
@@ -39,9 +39,9 @@ SELECT * WHERE { ?structure wdt:P235 ?inchikey. }
 "
 
 surechembl_ids <- sparql_surechembl |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 inchikeys <- sparql_inchikeys |>
-  WikidataQueryServiceR::query_wikidata() |>
+  query_wikidata() |>
   as.data.frame()
 
 local_file <- "compounds.parquet"

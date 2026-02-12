@@ -4,9 +4,9 @@ if (!requireNamespace("stringi", quietly = TRUE)) {
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
-if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
-  install.packages("WikidataQueryServiceR")
-}
+source(
+  file = "https://raw.githubusercontent.com/adafede/cascade/main/R/query_wikidata.R"
+)
 
 path_chebi <- "https://ftp.ebi.ac.uk/pub/databases/chebi/flat_files/structures.tsv.gz"
 path_output_qs <- "data/chebi/chebi_ids.csv"
@@ -51,8 +51,8 @@ chebi <- path_chebi |>
   tidytable::distinct(id = compound_id, inchi = standard_inchi)
 
 # Query Wikidata
-chebi_ids <- WikidataQueryServiceR::query_wikidata(sparql_chebi)
-inchis <- WikidataQueryServiceR::query_wikidata(sparql_inchis)
+chebi_ids <- query_wikidata(sparql_chebi)
+inchis <- query_wikidata(sparql_inchis)
 
 # Filter valid and invalid ChEBI IDs
 ## COMMENT: Done this way in case the item has 2 InChIs
