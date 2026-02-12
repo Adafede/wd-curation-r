@@ -1,9 +1,9 @@
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
-if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
-  install.packages("WikidataQueryServiceR")
-}
+source(
+  file = "https://raw.githubusercontent.com/adafede/cascade/main/R/query_wikidata.R"
+)
 
 path_npatlas <- "https://www.npatlas.org/static/downloads/NPAtlas_download.tsv"
 path_output_qs <- "data/npatlas/npatlas_ids.csv"
@@ -37,9 +37,9 @@ npatlas <- path_npatlas |>
   tidytable::distinct(id = npaid, inchikey = compound_inchikey)
 
 npatlas_ids <- sparql_npatlas |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 inchikeys <- sparql_inchikeys |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 
 # Filter valid and invalid NP Atlas IDs
 ## COMMENT: Done this way in case the item has 2 InChIKeys

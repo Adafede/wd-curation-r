@@ -13,18 +13,18 @@ Files generated in `data` can be used to update Wikidata using
 
 | Package | Version | Citation |
 |:---|:---|:---|
-| base | 4.5.1 | R Core Team (2025) |
+| base | 4.5.2 | R Core Team (2025) |
 | curl | 7.0.0 | Ooms (2025) |
 | DBI | 1.2.3 | R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller (2024) |
 | devtools | 2.4.6 | Wickham et al. (2025) |
-| duckdb | 1.4.1 | Mühleisen and Raasveldt (2025) |
-| duckplyr | 1.1.2 | Mühleisen and Müller (2025) |
-| knitr | 1.50 | Xie (2014); Xie (2015); Xie (2025) |
+| duckdb | 1.4.4 | Mühleisen and Raasveldt (2026) |
+| duckplyr | 1.1.3 | Mühleisen and Müller (2025) |
+| httr2 | 1.2.2 | Wickham (2025) |
+| knitr | 1.51 | Xie (2014); Xie (2015); Xie (2025) |
 | rmarkdown | 2.30 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2025) |
 | stringi | 1.8.7 | Gagolewski (2022) |
 | tidytable | 0.11.2 | Fairbanks (2024) |
 | tidyverse | 2.0.0 | Wickham et al. (2019) |
-| WikidataQueryServiceR | 1.0.0 | Popov (2020) |
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
@@ -65,7 +65,7 @@ Mühleisen, Hannes, and Kirill Müller. 2025.
 
 <div id="ref-duckdb" class="csl-entry">
 
-Mühleisen, Hannes, and Mark Raasveldt. 2025.
+Mühleisen, Hannes, and Mark Raasveldt. 2026.
 *<span class="nocase">duckdb</span>: DBI Package for the DuckDB Database
 Management System*. <https://doi.org/10.32614/CRAN.package.duckdb>.
 
@@ -76,14 +76,6 @@ Management System*. <https://doi.org/10.32614/CRAN.package.duckdb>.
 Ooms, Jeroen. 2025. *<span class="nocase">curl</span>: A Modern and
 Flexible Web Client for r*.
 <https://doi.org/10.32614/CRAN.package.curl>.
-
-</div>
-
-<div id="ref-WikidataQueryServiceR" class="csl-entry">
-
-Popov, Mikhail. 2020. *WikidataQueryServiceR: API Client Library for
-“Wikidata Query Service”*.
-<https://doi.org/10.32614/CRAN.package.WikidataQueryServiceR>.
 
 </div>
 
@@ -100,6 +92,13 @@ Computing*. Vienna, Austria: R Foundation for Statistical Computing.
 R Special Interest Group on Databases (R-SIG-DB), Hadley Wickham, and
 Kirill Müller. 2024. *DBI: R Database Interface*.
 <https://doi.org/10.32614/CRAN.package.DBI>.
+
+</div>
+
+<div id="ref-httr2" class="csl-entry">
+
+Wickham, Hadley. 2025. *Httr2: Perform HTTP Requests and Process the
+Responses*. <https://doi.org/10.32614/CRAN.package.httr2>.
 
 </div>
 

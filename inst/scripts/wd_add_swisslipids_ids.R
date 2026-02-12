@@ -1,9 +1,9 @@
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
-if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
-  install.packages("WikidataQueryServiceR")
-}
+source(
+  file = "https://raw.githubusercontent.com/adafede/cascade/main/R/query_wikidata.R"
+)
 
 path_swisslipids <- "https://www.swisslipids.org/api/file.php?cas=download_files&file=lipids.tsv"
 path_output_qs <- "data/swisslipids/swisslipids_ids.csv"
@@ -47,9 +47,9 @@ swisslipids <- path_swisslipids |>
   tidytable::filter(inchikey != "-")
 
 swisslipids_ids <- sparql_swisslipids |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 inchikeys <- sparql_inchikeys |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 
 # Filter valid and invalid SwissLipids IDs
 ## COMMENT: Done this way in case the item has 2 InChIKeys

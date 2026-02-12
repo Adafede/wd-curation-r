@@ -4,9 +4,9 @@ if (!requireNamespace("curl", quietly = TRUE)) {
 if (!requireNamespace("tidytable", quietly = TRUE)) {
   install.packages("tidytable")
 }
-if (!requireNamespace("WikidataQueryServiceR", quietly = TRUE)) {
-  install.packages("WikidataQueryServiceR")
-}
+source(
+  file = "https://raw.githubusercontent.com/adafede/cascade/main/R/query_wikidata.R"
+)
 
 path_unii <- "https://precision.fda.gov/uniisearch/archive/latest/UNII_Data.zip"
 path_output_qs <- "data/unii/unii_ids.csv"
@@ -55,9 +55,9 @@ unii <- tidytable::fread(
   tidytable::distinct(id = "UNII", inchikey = "INCHIKEY")
 
 unii_ids <- sparql_unii |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 inchikeys <- sparql_inchikeys |>
-  WikidataQueryServiceR::query_wikidata()
+  query_wikidata()
 
 # Filter valid and invalid SwissLipids IDs
 ## COMMENT: Done this way in case the item has 2 InChIKeys
