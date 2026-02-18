@@ -16,8 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install
-        uses: https://github.com/posit-dev/setup-air@v1
+      - uses: posit-dev/setup-air@v1
 
       - name: Check
         run: air format . --check
