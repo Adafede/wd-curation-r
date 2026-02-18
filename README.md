@@ -4,6 +4,9 @@
 
 # wd-curation-r
 
+> **This repository has moved to [Codeberg](https://codeberg.org/adafede/wd-curation-r).**
+> This mirror is no longer maintained.
+
 Series of programs to curate Wikidata.
 
 Files generated in `data` can be used to update Wikidata using
