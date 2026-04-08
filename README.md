@@ -1,11 +1,7 @@
 
-
 <!-- README.md is generated from README.qmd. Please edit that file -->
 
 # wd-curation-r
-
-> **This repository has moved to [Codeberg](https://codeberg.org/adafede/wd-curation-r).**
-> This mirror is no longer maintained.
 
 Series of programs to curate Wikidata.
 
