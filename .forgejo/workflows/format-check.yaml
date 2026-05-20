@@ -13,7 +13,7 @@ jobs:
   format-check:
     runs-on: codeberg-tiny
     steps:
-      - uses: actions/checkout@v6
+      - uses: https://github.com/actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Install air
         run: curl -fsSL https://github.com/posit-dev/air/releases/latest/download/air-installer.sh | sh
