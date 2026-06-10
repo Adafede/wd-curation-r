@@ -1,6 +1,6 @@
 ^.*\.Rproj$
-^\.Rproj\.user$
-^codemeta\.json$
 ^[.]?air[.]toml$
-^\.vscode$
+^\.Rproj\.user$
 ^\.github$
+^\.vscode$
+^codemeta\.json$
