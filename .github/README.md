@@ -1,33 +1,32 @@
-
-
 <!-- README.md is generated from README.qmd. Please edit that file -->
 
 # wd-curation-r
 
-> **This repository has moved to [Codeberg](https://codeberg.org/adafede/wd-curation-r).**
-> This mirror is no longer maintained.
+> **This repository has moved to
+> [Codeberg](https://codeberg.org/adafede/wd-curation-r).** This mirror is no
+> longer maintained.
 
 Series of programs to curate Wikidata.
 
-Files generated in `data` can be used to update Wikidata using
-[QuickStatements 3.0](https://qs-dev.toolforge.org/).
+Files generated in `data` can be used to update Wikidata using [QuickStatements
+3.0](https://qs-dev.toolforge.org/).
 
 ## Additional software credits
 
-| Package | Version | Citation |
-|:---|:---|:---|
-| base | 4.5.2 | R Core Team (2025) |
-| curl | 7.0.0 | Ooms (2025) |
-| DBI | 1.2.3 | R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller (2024) |
-| devtools | 2.4.6 | Wickham et al. (2025) |
-| duckdb | 1.4.4 | Mühleisen and Raasveldt (2026) |
-| duckplyr | 1.1.3 | Mühleisen and Müller (2025) |
-| httr2 | 1.2.2 | Wickham (2025) |
-| knitr | 1.51 | Xie (2014); Xie (2015); Xie (2025) |
-| rmarkdown | 2.30 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2025) |
-| stringi | 1.8.7 | Gagolewski (2022) |
-| tidytable | 0.11.2 | Fairbanks (2024) |
-| tidyverse | 2.0.0 | Wickham et al. (2019) |
+  | Package   | Version | Citation                                                                                      |
+  | :-------- | :------ | :-------------------------------------------------------------------------------------------- |
+  | base      | 4.5.2   | R Core Team (2025)                                                                            |
+  | curl      | 7.0.0   | Ooms (2025)                                                                                   |
+  | DBI       | 1.2.3   | R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller (2024)                  |
+  | devtools  | 2.4.6   | Wickham et al. (2025)                                                                         |
+  | duckdb    | 1.4.4   | Mühleisen and Raasveldt (2026)                                                                |
+  | duckplyr  | 1.1.3   | Mühleisen and Müller (2025)                                                                   |
+  | httr2     | 1.2.2   | Wickham (2025)                                                                                |
+  | knitr     | 1.51    | Xie (2014); Xie (2015); Xie (2025)                                                            |
+  | rmarkdown | 2.30    | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2025) |
+  | stringi   | 1.8.7   | Gagolewski (2022)                                                                             |
+  | tidytable | 0.11.2  | Fairbanks (2024)                                                                              |
+  | tidyverse | 2.0.0   | Wickham et al. (2019)                                                                         |
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">

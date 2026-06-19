@@ -11,11 +11,15 @@ bibliography: grateful-refs.bib
 
 Series of programs to curate Wikidata.
 
-Files generated in `data` can be used to update Wikidata using [QuickStatements 3.0](https://qs-dev.toolforge.org/).
+Files generated in `data` can be used to update Wikidata using [QuickStatements
+3.0](https://qs-dev.toolforge.org/).
 
 ## Additional software credits
 
-```{r, echo = FALSE, message = FALSE}
+```{r}
+#| echo: false
+#| message: false
+
 # Check if DESCRIPTION is in current dir
 # Else `altdoc` will not find the dependencies
 desc_path <- if (file.exists("DESCRIPTION")) {
