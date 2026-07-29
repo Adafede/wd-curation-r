@@ -17,6 +17,7 @@ Files generated in `data` can be used to update Wikidata using [QuickStatements
 ## Additional software credits
 
 ```{r}
+#| label: grateful
 #| echo: false
 #| message: false
 

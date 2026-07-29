@@ -101,12 +101,15 @@ add_final <- unii |>
   ) |>
   tidytable::inner_join(inchikeys, by = c("inchikey" = "inchikey")) |>
   tidytable::distinct() |>
-  dplyr::mutate_all(
-    ~ gsub(
-      pattern = "http://www.wikidata.org/entity/",
-      replacement = "",
-      x = .,
-      fixed = TRUE
+  tidytable::mutate(
+    tidytable::across(
+      tidytable::everything(),
+      ~ gsub(
+        pattern = "http://www.wikidata.org/entity/",
+        replacement = "",
+        x = .,
+        fixed = TRUE
+      )
     )
   ) |>
   tidytable::mutate(
